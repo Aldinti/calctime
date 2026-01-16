@@ -159,7 +159,7 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 ## 🙏 Agradecimientos
 
 - Proyecto personal desarrollado como iniciativa para facilitar los cálculos de tiempos exigidos en el formato de hoja de vida de la función pública en Colombia.
-- Universidad: Universidad Cooérativa de Colombia - UCC
+- Universidad: Universidad Coperativa de Colombia - UCC
 
 ---
 
