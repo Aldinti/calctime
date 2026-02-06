@@ -1,14 +1,4 @@
-"""
-Calculadora de Años, Meses y Días
-==================================
-Este programa implementa una calculadora que maneja unidades de tiempo
-(años, meses, días) con las siguientes conversiones:
-- 1 día = 24 horas
-- 1 mes = 30 días
-- 1 año = 12 meses
-
-Soporta las operaciones: suma, resta, multiplicación y división.
-"""
+import os
 
 
 class Tiempo:
@@ -236,9 +226,66 @@ class Tiempo:
         return self == otro or self > otro
 
 
+def limpiar_pantalla():
+    """Limpia la consola según el sistema operativo."""
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
+def obtener_entrada_numerica(prompt, tipo=float, permitir_negativos=True):
+    """
+    Solicita una entrada al usuario y valida que sea un número.
+    
+    Args:
+        prompt (str): Mensaje a mostrar al usuario
+        tipo (type): Tipo de dato esperado (int o float)
+        permitir_negativos (bool): Si se permiten números menores a cero
+        
+    Returns:
+        tipo: El valor validado
+    """
+    while True:
+        try:
+            entrada = input(f"{prompt}").strip()
+            
+            # Verificar si está vacío
+            if not entrada:
+                print("  ❌ Error: La entrada no puede estar vacía.")
+                continue
+                
+            # Intentar conversión
+            valor = tipo(entrada)
+            
+            # Validar si es negativo cuando no está permitido
+            if not permitir_negativos and valor < 0:
+                print("  ❌ Error: No se permiten valores negativos.")
+                continue
+                
+            return valor
+        except ValueError:
+            nombre_tipo = "entero" if tipo == int else "numérico"
+            print(f"  ❌ Error: '{entrada}' no es un valor {nombre_tipo} válido. Ingrese solo números.")
+
+
+def seleccionar_opcion(prompt, opciones_validas):
+    """
+    Solicita una opción al usuario y valida que esté en la lista de permitidas.
+    
+    Args:
+        prompt (str): Mensaje a mostrar al usuario
+        opciones_validas (list): Lista de strings con las opciones permitidas
+        
+    Returns:
+        str: La opción seleccionada válida
+    """
+    while True:
+        opcion = input(prompt).strip()
+        if opcion in opciones_validas:
+            return opcion
+        print(f"  ❌ Error: '{opcion}' no es una opción válida. Elija entre: {', '.join(opciones_validas)}")
+
 def leer_tiempo(mensaje):
     """
-    Lee un objeto Tiempo desde la entrada del usuario.
+    Lee un objeto Tiempo desde la entrada del usuario, validando cada componente.
     
     Args:
         mensaje (str): Mensaje a mostrar al usuario
@@ -247,21 +294,19 @@ def leer_tiempo(mensaje):
         Tiempo: Objeto Tiempo creado con los valores ingresados
     """
     print(f"\n{mensaje}")
+    print("  (Ingrese 0 si no desea especificar una unidad)")
     
-    while True:
-        try:
-            años = float(input("  Años: "))
-            meses = float(input("  Meses: "))
-            dias = float(input("  Días: "))
-            horas = float(input("  Horas: "))
-            return Tiempo(años, meses, dias, horas)
-        except ValueError:
-            print("  ❌ Error: Ingrese valores numéricos válidos")
+    años = obtener_entrada_numerica("  Años: ")
+    meses = obtener_entrada_numerica("  Meses: ")
+    dias = obtener_entrada_numerica("  Días: ")
+    horas = obtener_entrada_numerica("  Horas: ")
+    
+    return Tiempo(años, meses, dias, horas)
 
 
 def leer_escalar(mensaje):
     """
-    Lee un número escalar desde la entrada del usuario.
+    Lee un número escalar desde la entrada del usuario con validación.
     
     Args:
         mensaje (str): Mensaje a mostrar al usuario
@@ -269,12 +314,7 @@ def leer_escalar(mensaje):
     Returns:
         float: Número ingresado
     """
-    while True:
-        try:
-            valor = float(input(f"{mensaje}: "))
-            return valor
-        except ValueError:
-            print("  ❌ Error: Ingrese un valor numérico válido")
+    return obtener_entrada_numerica(f"{mensaje}: ")
 
 
 def mostrar_menu():
@@ -339,6 +379,7 @@ def mostrar_ejemplos():
 
 def operacion_recursiva_suma():
     """Realiza operaciones de suma recursivas."""
+    limpiar_pantalla()
     print("\n➕ SUMA DE TIEMPOS (MODO RECURSIVO)")
     resultado = leer_tiempo("Ingrese el primer tiempo:")
     
@@ -352,20 +393,24 @@ def operacion_recursiva_suma():
         print("  2. Iniciar nueva suma")
         print("  0. Volver al menú principal")
         
-        opcion = input("\n➤ Opción: ").strip()
+        opcion = seleccionar_opcion("\n➤ Opción: ", ["0", "1", "2"])
         
         if opcion == "1":
+            limpiar_pantalla()
+            print("\n➕ SUMA DE TIEMPOS (MODO RECURSIVO)")
+            print(f"\n✅ Resultado acumulado: {resultado}")
             continue
         elif opcion == "2":
+            limpiar_pantalla()
+            print("\n➕ SUMA DE TIEMPOS (MODO RECURSIVO)")
             resultado = leer_tiempo("Ingrese el nuevo primer tiempo:")
         elif opcion == "0":
             break
-        else:
-            print("\n❌ Opción no válida")
 
 
 def operacion_recursiva_resta():
     """Realiza operaciones de resta recursivas."""
+    limpiar_pantalla()
     print("\n➖ RESTA DE TIEMPOS (MODO RECURSIVO)")
     resultado = leer_tiempo("Ingrese el primer tiempo:")
     
@@ -379,20 +424,24 @@ def operacion_recursiva_resta():
         print("  2. Iniciar nueva resta")
         print("  0. Volver al menú principal")
         
-        opcion = input("\n➤ Opción: ").strip()
+        opcion = seleccionar_opcion("\n➤ Opción: ", ["0", "1", "2"])
         
         if opcion == "1":
+            limpiar_pantalla()
+            print("\n➖ RESTA DE TIEMPOS (MODO RECURSIVO)")
+            print(f"\n✅ Resultado acumulado: {resultado}")
             continue
         elif opcion == "2":
+            limpiar_pantalla()
+            print("\n➖ RESTA DE TIEMPOS (MODO RECURSIVO)")
             resultado = leer_tiempo("Ingrese el nuevo primer tiempo:")
         elif opcion == "0":
             break
-        else:
-            print("\n❌ Opción no válida")
 
 
 def operacion_recursiva_multiplicacion():
     """Realiza operaciones de multiplicación recursivas."""
+    limpiar_pantalla()
     print("\n✖️ MULTIPLICACIÓN POR ESCALAR (MODO RECURSIVO)")
     resultado = leer_tiempo("Ingrese el tiempo inicial:")
     
@@ -406,20 +455,24 @@ def operacion_recursiva_multiplicacion():
         print("  2. Iniciar nueva multiplicación")
         print("  0. Volver al menú principal")
         
-        opcion = input("\n➤ Opción: ").strip()
+        opcion = seleccionar_opcion("\n➤ Opción: ", ["0", "1", "2"])
         
         if opcion == "1":
+            limpiar_pantalla()
+            print("\n✖️ MULTIPLICACIÓN POR ESCALAR (MODO RECURSIVO)")
+            print(f"\n✅ Resultado acumulado: {resultado}")
             continue
         elif opcion == "2":
+            limpiar_pantalla()
+            print("\n✖️ MULTIPLICACIÓN POR ESCALAR (MODO RECURSIVO)")
             resultado = leer_tiempo("Ingrese el nuevo tiempo inicial:")
         elif opcion == "0":
             break
-        else:
-            print("\n❌ Opción no válida")
 
 
 def operacion_recursiva_division():
     """Realiza operaciones de división recursivas."""
+    limpiar_pantalla()
     print("\n➗ DIVISIÓN POR ESCALAR (MODO RECURSIVO)")
     resultado = leer_tiempo("Ingrese el tiempo inicial:")
     
@@ -438,25 +491,29 @@ def operacion_recursiva_division():
         print("  2. Iniciar nueva división")
         print("  0. Volver al menú principal")
         
-        opcion = input("\n➤ Opción: ").strip()
+        opcion = seleccionar_opcion("\n➤ Opción: ", ["0", "1", "2"])
         
         if opcion == "1":
+            limpiar_pantalla()
+            print("\n➗ DIVISIÓN POR ESCALAR (MODO RECURSIVO)")
+            print(f"\n✅ Resultado acumulado: {resultado}")
             continue
         elif opcion == "2":
+            limpiar_pantalla()
+            print("\n➗ DIVISIÓN POR ESCALAR (MODO RECURSIVO)")
             resultado = leer_tiempo("Ingrese el nuevo tiempo inicial:")
         elif opcion == "0":
             break
-        else:
-            print("\n❌ Opción no válida")
 
 
 def main():
     """Función principal del programa."""
     while True:
+        limpiar_pantalla()
         mostrar_menu()
         
         try:
-            opcion = input("\n➤ Seleccione una opción: ").strip()
+            opcion = seleccionar_opcion("\n➤ Seleccione una opción: ", ["0", "1", "2", "3", "4", "5"])
             
             if opcion == "0":
                 print("\n👋 ¡Hasta luego!")
@@ -476,11 +533,8 @@ def main():
             
             elif opcion == "5":
                 # Ejemplos
+                limpiar_pantalla()
                 mostrar_ejemplos()
-                input("\nPresione Enter para continuar...")
-            
-            else:
-                print("\n❌ Opción no válida. Intente nuevamente.")
                 input("\nPresione Enter para continuar...")
         
         except Exception as e:

@@ -5,7 +5,8 @@ Este script verifica que todas las operaciones y conversiones
 funcionen correctamente.
 """
 
-from calctime import Tiempo
+from unittest.mock import patch
+from calctime import Tiempo, obtener_entrada_numerica, seleccionar_opcion
 
 
 def test_conversiones():
@@ -250,6 +251,69 @@ def test_casos_especiales():
     print("\n✅ Todos los casos especiales pasaron correctamente")
 
 
+def test_validacion_y_entrada():
+    """Prueba las funciones de validación de entrada."""
+    print("\n" + "="*60)
+    print("TEST 8: VALIDACIÓN DE DATOS Y ENTRADAS")
+    print("="*60)
+    
+    # Prueba obtener_entrada_numerica con entrada válida
+    with patch('builtins.input', side_effect=['10']):
+        valor = obtener_entrada_numerica("Test: ")
+        assert valor == 10.0, f"Error: esperado 10.0, obtenido {valor}"
+        print("✅ obtener_entrada_numerica acepta valores válidos")
+    
+    # Prueba obtener_entrada_numerica con entrada vacía seguida de válida
+    with patch('builtins.input', side_effect=['', '25']):
+        # Capturamos print para no ensuciar la salida del test
+        with patch('builtins.print'):
+            valor = obtener_entrada_numerica("Test: ")
+            assert valor == 25.0, "Error: debería manejar entradas vacías"
+            print("✅ obtener_entrada_numerica maneja entradas vacías")
+            
+    # Prueba obtener_entrada_numerica con letra seguida de válida
+    with patch('builtins.input', side_effect=['abc', '50']):
+        with patch('builtins.print'):
+            valor = obtener_entrada_numerica("Test: ")
+            assert valor == 50.0, "Error: debería manejar entradas no numéricas"
+            print("✅ obtener_entrada_numerica maneja entradas no numéricas (letras)")
+            
+    # Prueba obtener_entrada_numerica con negativo cuando está prohibido
+    with patch('builtins.input', side_effect=['-5', '10']):
+        with patch('builtins.print'):
+            valor = obtener_entrada_numerica("Test: ", permitir_negativos=False)
+            assert valor == 10.0, "Error: debería prohibir negativos"
+            print("✅ obtener_entrada_numerica prohíbe negativos cuando se solicita")
+
+    # Prueba seleccionar_opcion
+    with patch('builtins.input', side_effect=['invalid', '2']):
+        with patch('builtins.print'):
+            opcion = seleccionar_opcion("Test: ", ["1", "2", "3"])
+            assert opcion == "2", f"Error: esperado '2', obtenido '{opcion}'"
+            print("✅ seleccionar_opcion valida opciones correctas")
+            
+    print("\n✅ Todas las pruebas de validación pasaron correctamente")
+
+
+def test_interfaz_limpieza():
+    """Prueba la función de limpieza de pantalla."""
+    print("\n" + "="*60)
+    print("TEST 9: LIMPIEZA DE PANTALLA")
+    print("="*60)
+    
+    from calctime import limpiar_pantalla
+    import os
+    
+    with patch('os.system') as mock_system:
+        limpiar_pantalla()
+        mock_system.assert_called_once()
+        comando = 'cls' if os.name == 'nt' else 'clear'
+        mock_system.assert_called_with(comando)
+        print(f"✅ limpiar_pantalla llamó a os.system('{comando}')")
+        
+    print("\n✅ La prueba de limpieza de pantalla pasó correctamente")
+
+
 def ejecutar_todas_las_pruebas():
     """Ejecuta todas las pruebas."""
     print("\n" + "="*60)
@@ -264,6 +328,8 @@ def ejecutar_todas_las_pruebas():
         test_division()
         test_comparaciones()
         test_casos_especiales()
+        test_validacion_y_entrada()
+        test_interfaz_limpieza()
         
         print("\n" + "="*60)
         print("  ✅ TODAS LAS PRUEBAS PASARON EXITOSAMENTE")

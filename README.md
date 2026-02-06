@@ -10,9 +10,10 @@ Una calculadora interactiva en Python que maneja unidades de tiempo (años, mese
 - ✅ **Operaciones aritméticas completas**: Suma, resta, multiplicación y división
 - ✅ **Modo recursivo**: Encadena múltiples cálculos sin volver al menú principal
 - ✅ **Conversiones automáticas**: Entre años, meses, días y horas
-- ✅ **Interfaz intuitiva**: Menú interactivo en consola con emojis
-- ✅ **Validación robusta**: Manejo de errores y validación de entradas
-- ✅ **Suite de pruebas**: Tests automatizados con 100% de cobertura
+- ✅ **Interfaz interactiva**: Menú interactivo en consola con emojis
+- ✅ **Validación avanzada**: Bloquea entradas no numéricas y maneja errores por campo
+- ✅ **Limpieza de pantalla**: Interfaz despejada con actualización dinámica de resultados
+- ✅ **Suite de pruebas extendida**: Tests automatizados con validación de entradas y mocks
 
 ## 📋 Especificaciones
 
@@ -116,15 +117,10 @@ La clase principal utiliza **horas** como unidad base de almacenamiento interno 
 
 La suite de pruebas incluye 7 categorías:
 
-1. **Conversiones entre unidades**
-2. **Operación de suma**
-3. **Operación de resta**
-4. **Operación de multiplicación**
-5. **Operación de división**
-6. **Operaciones de comparación**
-7. **Casos especiales** (valores negativos, decimales, cero)
+8. **Validación de entradas y datos** (entradas vacías, caracteres alfanuméricos)
+9. **Funcionalidad de limpieza de pantalla**
 
-**Resultado**: ✅ 100% de pruebas pasadas
+**Resultado**: ✅ 100% de pruebas pasadas (Lógica + Interfaz)
 
 ## 📁 Estructura del Proyecto
 
