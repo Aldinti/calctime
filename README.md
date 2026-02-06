@@ -148,8 +148,6 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 
 ## 👤 Autor
 
-**Tu Nombre**
-
 - GitHub: [@Aldinti](https://github.com/tu-usuario)
 
 ## 🙏 Agradecimientos
