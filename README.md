@@ -156,7 +156,6 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 ## 👤 Autor
 
 **Ing. Aldo B. Patiño F.**
-
 - GitHub: [@Aldinti](https://github.com/tu-usuario)
 
 ## 📚 Documentación Adicional
