@@ -48,6 +48,13 @@ cd calctime
 python calctime.py
 ```
 
+### Ejecutar como Aplicación Portable (.exe)
+
+Si estás en Windows, puedes usar la versión compilada sin necesidad de Python:
+
+1. Dirígete a la carpeta `dist/`
+2. Ejecuta `CalcTime.exe`
+
 ### Ejecutar las pruebas
 
 ```bash
@@ -148,14 +155,18 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 
 ## 👤 Autor
 
-**Tu Nombre**
+**Ing. Aldo B. Patiño F.**
 
 - GitHub: [@Aldinti](https://github.com/tu-usuario)
+
+## 📚 Documentación Adicional
+
+- [Informe Detallado del Proyecto](INFORME_PROYECTO.md): Contiene el plan ejecutado, manual técnico de compilación y manual de usuario detallado.
 
 ## 🙏 Agradecimientos
 
 - Proyecto personal desarrollado como iniciativa para facilitar los cálculos de tiempos exigidos en el formato de hoja de vida de la función pública en Colombia.
-- Universidad: Universidad Coperativa de Colombia - UCC
+- Universidad: Universidad Cooperativa de Colombia - UCC
 
 ---
 
