@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CalcTime GUI - Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="calculator-wrapper">
+        <div class="display">
+            <div id="expression" class="expression"></div>
+            <div id="result" class="result">0</div>
+        </div>
+        
+        <div class="keypad">
+            <!-- Funciones de Control -->
+            <button class="btn btn-operator" data-action="clear">AC</button>
+            <button class="btn btn-operator" data-action="delete">DEL</button>
+            <button class="btn copy-btn btn-action" data-action="copy">Copiar</button>
+            
+            <!-- Dígitos y Operadores Básicos -->
+            <button class="btn" data-action="digit">7</button>
+            <button class="btn" data-action="digit">8</button>
+            <button class="btn" data-action="digit">9</button>
+            <button class="btn btn-operator" data-action="operator">÷</button>
+            
+            <button class="btn" data-action="digit">4</button>
+            <button class="btn" data-action="digit">5</button>
+            <button class="btn" data-action="digit">6</button>
+            <button class="btn btn-operator" data-action="operator">×</button>
+            
+            <button class="btn" data-action="digit">1</button>
+            <button class="btn" data-action="digit">2</button>
+            <button class="btn" data-action="digit">3</button>
+            <button class="btn btn-operator" data-action="operator">-</button>
+            
+            <button class="btn" style="grid-column: span 2;" data-action="digit">0</button>
+            <button class="btn" data-action="digit">.</button>
+            <button class="btn btn-operator" data-action="operator">+</button>
+            
+            <!-- Unidades de Tiempo -->
+            <button class="btn btn-unit" data-action="unit">Años</button>
+            <button class="btn btn-unit" data-action="unit">Meses</button>
+            <button class="btn btn-unit" data-action="unit">Días</button>
+            <button class="btn btn-unit" data-action="unit">Horas</button>
+            <button class="btn btn-unit" style="grid-column: span 2;" data-action="unit">Minutos</button>
+            
+            <!-- Acción Final -->
+            <button class="btn btn-action" style="grid-column: span 2;" data-action="calculate">=</button>
+        </div>
+    </div>
+
+    <script src="calculator.js"></script>
+</body>
+</html>
