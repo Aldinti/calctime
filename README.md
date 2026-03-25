@@ -1,4 +1,7 @@
-# ⏰ CalcTime v3.0 - El Ecosistema de Cálculo de Tiempo
+# Walkthrough: CalcTime v3.0.9 - El Sistema Multi-Interfaz Definitivo
+---
+*CalcTime v3.0.9 - "Reactive Perfection" (2026)*
+de Cálculo de Tiempo
 
 Una solución completa y multi-interfaz para el manejo de unidades de tiempo. Incluye lógica robusta en Python con tres formas de interacción independientes.
 
@@ -15,6 +18,14 @@ Una solución completa y multi-interfaz para el manejo de unidades de tiempo. In
 ## ✨ Características Principales v3.0
 
 - ✅ **Persistencia Multi-Capa**: LocalStorage para web y archivos JSON/TXT para desktop.
+-   **Multi-Interfaz**: Incluye una versión Web moderna y una aplicación de escritorio nativa para Windows.
+
+#### Novedades v3.0.9 (Desktop):
+- **Arquitectura Reactiva**: Uso de `ft.Ref` para una sincronización instantánea entre lógica y UI.
+- **Soporte de Teclado**: Control completo mediante el bloque numérico (Numpad) y atajos de unidad.
+- **Internacionalización**: Resultados con iniciales en inglés (Y, M, D, H) para compatibilidad universal.
+- **Estabilidad de Paneles**: Gestión robusta de Historial y Ajustes mediante el sistema de superposiciones de Flet.
+
 - ✅ **Personalización Avanzada**: Temas Oscuro/Claro y selección de fuentes en ambas GUIs.
 - ✅ **Exportación de Historial**: Generación de reportes en `.txt` de tus cálculos.
 - ✅ **Lógica Unificada**: Los 518,400 minutos de un año calculados con precisión matemática.

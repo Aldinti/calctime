@@ -17,11 +17,12 @@ Se optimizó la presentación en consola:
 - **Visualización Acumulada**: En el modo recursivo, se mantiene el resultado anterior visible mientras se solicitan los nuevos datos.
 - **Emojis e Indicadores**: Uso de iconos visuales para mejorar la legibilidad de las operaciones.
 
-### Fase 3: Suite de Pruebas y Calidad
-Se expandió la suite de pruebas automatizadas:
-- **Mocks de Entrada**: Simulación de interacciones de usuario para probar la resistencia del código.
-- **Pruebas de Interfaz**: Verificación de las llamadas al sistema para la limpieza de pantalla.
-- **Cobertura Lógica**: Mantenimiento de las pruebas aritméticas originales.
+### Walkthrough: CalcTime v3.0.9 - El Sistema Multi-Interfaz Definitivo
+(Web & Desktop)
+Se expandió CalcTime para ser accesible desde cualquier entorno:
+- **GUI Web Premium**: Interfaz HTML/JS con diseño *Glassmorphism*.
+- **GUI Desktop Nativa (v3.0.9)**: Aplicación construida con **Flet**, con arquitectura reactiva (`ft.Ref`), soporte completo para teclado (Numpad) y localización internacional de resultados.
+- **Lógica Unificada**: Reutilización de la clase `Tiempo` en Python para todas las versiones.
 
 ---
 
@@ -51,32 +52,28 @@ Para ejecutar el programa directamente desde la terminal, siga estos pasos:
 
 ---
 
-## 4. Manual Técnico: Generación del Archivo Ejecutable (.exe)
+---
 
-Si desea volver a generar el ejecutable o actualizarlo tras cambios en el código, siga este procedimiento:
+## 5. Manual de Interfaz Gráfica (Web & Desktop)
 
-1. **Instalar PyInstaller**:
-   Es necesario tener la herramienta PyInstaller instalada en su entorno de Python:
-   ```bash
-   pip install pyinstaller
-   ```
-
-2. **Comando de Compilación**:
-   Ejecute el siguiente comando desde la raíz del proyecto para generar un archivo único:
-   ```bash
-   pyinstaller --onefile --name "CalcTime" calctime.py
-   ```
-
-3. **Explicación de los parámetros**:
-   - `--onefile`: Crea un solo archivo `.exe` en lugar de una carpeta con muchos archivos.
-   - `--name "CalcTime"`: Define el nombre del archivo final.
-   - `calctime.py`: El script fuente que se va a compilar.
-
-4. **Localización del Resultado**:
-   Una vez finalizado el proceso (donde dirá "Build complete!"), encontrará el archivo en la carpeta:
-   `\dist\CalcTime.exe`
+### 5.1 Ejecución de la Versión Desktop (Nativa Windows)
+1.  **Instalar Flet**: Es el motor gráfico necesario.
+    ```bash
+    pip install flet
+    ```
+2.  **Lanzar la aplicación**:
+    ```bash
+    python gui_windows/main_win.py
+    ```
+#### Novedades v3.0.9 (Desktop):
+-4.  **Soporte de Teclado (v3.0.9)**: Control nativo mediante NumPad, Enter y teclas de unidad.
+5.  **Internacionalización (v3.0.9)**: Resultados en formato internacional (Y, M, D, H).
+6.  **Arquitectura Reactiva**: Implementación con `ft.Ref` para una respuesta instantánea.
+7.  **Lógica Compartida**: Código core unificado en Python para CLI, Web y Desktop.
+1.  Navegue a la carpeta `gui/`.
+2.  Abra el archivo `index.html` en su navegador preferido (Chrome, Edge).
 
 ---
 
-## 5. Conclusión
-El proyecto CalcTime ha evolucionado de un script básico a una herramienta robusta y fácil de usar, con estándares de validación modernos y capacidad de distribución independiente para usuarios de Windows.
+## 6. Conclusión
+El proyecto CalcTime ha evolucionado de un script básico a un ecosistema multiplataforma robusto. Con tres interfaces independientes (CLI, Web, Desktop), ofrece flexibilidad total para el usuario final, manteniendo siempre la precisión matemática en la gestión de tiempos.
