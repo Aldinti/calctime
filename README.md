@@ -1,20 +1,23 @@
-# ⏰ CalcTime v2.0 - Calculadora de Años, Meses y Días
+# ⏰ CalcTime v3.0 - El Ecosistema de Cálculo de Tiempo
 
-Una herramienta integral para el manejo de unidades de tiempo que incluye una potente lógica en Python y una **nueva interfaz gráfica (GUI)** moderna con persistencia de datos.
+Una solución completa y multi-interfaz para el manejo de unidades de tiempo. Incluye lógica robusta en Python con tres formas de interacción independientes.
 
 [![Python](https://img.shields.io/badge/Python-3.7+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/Version-2.0.0-green.svg)](https://img.shields.io/badge/Version-2.0.0-green.svg)
+[![Version](https://img.shields.io/badge/Version-3.0.0-purple.svg)](https://img.shields.io/badge/Version-3.0.0-purple.svg)
 
-## 🌟 Características Principales
+## 🌟 3 Interfaces Independientes
 
-- ✅ **Interfaz Gráfica Premium**: Diseño *Glassmorphism* con soporte para modo oscuro/claro y selección de fuentes.
-- ✅ **Persistencia de Datos**: El historial de cálculos y tus ajustes se guardan automáticamente en el navegador.
-- ✅ **Operaciones Aritméticas Completas**: Suma, resta, multiplicación y división de tiempos con alta precisión.
-- ✅ **Modo Recursivo**: Encadena múltiples cálculos sin perder el flujo de trabajo.
-- ✅ **Conversiones Precisas**: Manejo automático entre años, meses, días, horas y **minutos**.
-- ✅ **Exportación de Datos**: Descarga tu historial de cálculos directamente en un archivo `.txt`.
-- ✅ **Suite de Pruebas Robusta**: Garantía de precisión lógica del 100%.
+1.  **💻 Desktop Native (Windows)**: Aplicación de escritorio moderna construida con Flet.
+2.  **🌐 Web Premium (HTML/JS)**: Interfaz responsiva con diseño *Glassmorphism*.
+3.  **🐚 Terminal (CLI)**: Versión clásica de consola para operaciones rápidas.
+
+## ✨ Características Principales v3.0
+
+- ✅ **Persistencia Multi-Capa**: LocalStorage para web y archivos JSON/TXT para desktop.
+- ✅ **Personalización Avanzada**: Temas Oscuro/Claro y selección de fuentes en ambas GUIs.
+- ✅ **Exportación de Historial**: Generación de reportes en `.txt` de tus cálculos.
+- ✅ **Lógica Unificada**: Los 518,400 minutos de un año calculados con precisión matemática.
 
 ## 📋 Especificaciones
 
@@ -44,12 +47,17 @@ cd calctime
 
 ## 💻 Uso
 
-### Ejecutar la Interfaz Gráfica (Recomendado)
-Simplemente abre el archivo principal de la GUI en tu navegador:
-1. Navega a la carpeta `gui/`
-2. Abre `index.html` en Chrome, Edge o Firefox.
+### 1. Ejecutar la Aplicación de Escritorio (Windows Native)
+Requiere tener instalado `flet` (`pip install flet`).
+```bash
+python gui_windows/main_win.py
+```
 
-### Ejecutar el programa por Consola (Python)
+### 2. Ejecutar la Interfaz Web (Browser)
+Simplemente abre el archivo en tu navegador:
+- Navega a `gui/index.html` y ábrelo con Chrome/Edge.
+
+### 3. Ejecutar el programa por Consola (CLI)
 ```bash
 python calctime.py
 ```
@@ -136,14 +144,15 @@ La suite de pruebas incluye 7 categorías:
 
 ```
 calctime/
-├── gui/                 # Nueva Interfaz Gráfica Web
-│   ├── index.html       # Estructura de la calculadora
-│   ├── style.css        # Diseño Glassmorphism y Temas
-│   └── calculator.js    # Lógica en JS y Persistencia
-├── calctime.py          # Lógica central en Python
-├── test_calctime.py     # Suite de pruebas
-├── README.md            # Este archivo
-└── LICENSE              # Licencia MIT
+├── gui_windows/        # Interfaz Nativa Desktop (Nuevo v3.0)
+│   ├── main_win.py     # Aplicación Flet
+│   └── config.json     # Configuración local
+├── gui/                # Interfaz Web (Glassmorphism)
+│   ├── index.html
+│   └── calculator.js
+├── calctime.py         # Lógica core y CLI
+├── test_calctime.py    # Pruebas
+└── README.md
 ```
 
 ## 🤝 Contribuciones
