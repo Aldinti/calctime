@@ -1,27 +1,29 @@
-# ⏰ CalcTime - Calculadora de Años, Meses y Días
+# ⏰ CalcTime v2.0 - Calculadora de Años, Meses y Días
 
-Una calculadora interactiva en Python que maneja unidades de tiempo (años, meses, días, horas) con soporte completo para operaciones aritméticas y **modo recursivo** para encadenar cálculos.
+Una herramienta integral para el manejo de unidades de tiempo que incluye una potente lógica en Python y una **nueva interfaz gráfica (GUI)** moderna con persistencia de datos.
 
 [![Python](https://img.shields.io/badge/Python-3.7+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/Version-2.0.0-green.svg)](https://img.shields.io/badge/Version-2.0.0-green.svg)
 
-## 🌟 Características
+## 🌟 Características Principales
 
-- ✅ **Operaciones aritméticas completas**: Suma, resta, multiplicación y división
-- ✅ **Modo recursivo**: Encadena múltiples cálculos sin volver al menú principal
-- ✅ **Conversiones automáticas**: Entre años, meses, días y horas
-- ✅ **Interfaz interactiva**: Menú interactivo en consola con emojis
-- ✅ **Validación avanzada**: Bloquea entradas no numéricas y maneja errores por campo
-- ✅ **Limpieza de pantalla**: Interfaz despejada con actualización dinámica de resultados
-- ✅ **Suite de pruebas extendida**: Tests automatizados con validación de entradas y mocks
+- ✅ **Interfaz Gráfica Premium**: Diseño *Glassmorphism* con soporte para modo oscuro/claro y selección de fuentes.
+- ✅ **Persistencia de Datos**: El historial de cálculos y tus ajustes se guardan automáticamente en el navegador.
+- ✅ **Operaciones Aritméticas Completas**: Suma, resta, multiplicación y división de tiempos con alta precisión.
+- ✅ **Modo Recursivo**: Encadena múltiples cálculos sin perder el flujo de trabajo.
+- ✅ **Conversiones Precisas**: Manejo automático entre años, meses, días, horas y **minutos**.
+- ✅ **Exportación de Datos**: Descarga tu historial de cálculos directamente en un archivo `.txt`.
+- ✅ **Suite de Pruebas Robusta**: Garantía de precisión lógica del 100%.
 
 ## 📋 Especificaciones
 
 ### Conversiones
 
-- **1 día** = 24 horas
-- **1 mes** = 30 días = 720 horas
-- **1 año** = 12 meses = 360 días = 8,640 horas
+- **1 hora** = 60 minutos
+- **1 día** = 24 horas = 1,440 minutos
+- **1 mes** = 30 días = 720 horas = 43,200 minutos
+- **1 año** = 12 meses = 360 días = 8,640 horas = 518,400 minutos
 
 ### Operaciones Soportadas
 
@@ -42,21 +44,22 @@ cd calctime
 
 ## 💻 Uso
 
-### Ejecutar el programa principal
+### Ejecutar la Interfaz Gráfica (Recomendado)
+Simplemente abre el archivo principal de la GUI en tu navegador:
+1. Navega a la carpeta `gui/`
+2. Abre `index.html` en Chrome, Edge o Firefox.
 
+### Ejecutar el programa por Consola (Python)
 ```bash
 python calctime.py
 ```
 
 ### Ejecutar como Aplicación Portable (.exe)
-
-Si estás en Windows, puedes usar la versión compilada sin necesidad de Python:
-
+Si estás en Windows, puedes usar la versión compilada:
 1. Dirígete a la carpeta `dist/`
 2. Ejecuta `CalcTime.exe`
 
 ### Ejecutar las pruebas
-
 ```bash
 python test_calctime.py
 ```
@@ -133,7 +136,11 @@ La suite de pruebas incluye 7 categorías:
 
 ```
 calctime/
-├── calctime.py          # Programa principal
+├── gui/                 # Nueva Interfaz Gráfica Web
+│   ├── index.html       # Estructura de la calculadora
+│   ├── style.css        # Diseño Glassmorphism y Temas
+│   └── calculator.js    # Lógica en JS y Persistencia
+├── calctime.py          # Lógica central en Python
 ├── test_calctime.py     # Suite de pruebas
 ├── README.md            # Este archivo
 └── LICENSE              # Licencia MIT
