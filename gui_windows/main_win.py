@@ -4,6 +4,10 @@ import json
 import os
 from datetime import datetime
 import sys
+try:
+    import pyperclip
+except ImportError:
+    pyperclip = None
 
 # Añadir el directorio raíz al path para importar calctime
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -20,10 +24,16 @@ class CalcTimeWin:
         self.page.window.height = 780
         self.page.window.resizable = False
         
-        # Refs para acceso directo
+        # Rutas de persistencia (Misma carpeta que el script)
+        base_path = os.path.dirname(__file__)
+        self.config_path = os.path.join(base_path, "config.json")
+        self.history_path = os.path.join(base_path, "history.txt")
+        
+        # Refs y Controles Directos
         self.result_ref = ft.Ref[ft.Text]()
         self.expr_ref = ft.Ref[ft.Text]()
-        self.history_list_ref = ft.Ref[ft.ListView]()
+        self.history_list = ft.ListView(expand=True, spacing=8)
+        self.history_overlay = ft.Ref[ft.Container]()
         
         # Estado
         self.current_value = "0"
@@ -41,23 +51,24 @@ class CalcTimeWin:
 
     def load_data(self):
         try:
-            if os.path.exists("gui_windows/config.json"):
-                with open("gui_windows/config.json", "r") as f: self.settings = json.load(f)
-            if os.path.exists("gui_windows/history.txt"):
-                with open("gui_windows/history.txt", "r", encoding="utf-8") as f:
+            if os.path.exists(self.config_path):
+                with open(self.config_path, "r") as f: self.settings = json.load(f)
+            if os.path.exists(self.history_path):
+                with open(self.history_path, "r", encoding="utf-8") as f:
                     for line in f:
                         if "]" in line:
                             ts, entry = line.split("]", 1)
                             self.history.append({"timestamp": ts[1:], "entry": entry.strip()})
-        except: pass
+            print(f"Loaded {len(self.history)} history items from {self.history_path}")
+        except Exception as e: print(f"Load error: {e}")
 
     def save_data(self):
         try:
-            if not os.path.exists("gui_windows"): os.makedirs("gui_windows")
-            with open("gui_windows/config.json", "w") as f: json.dump(self.settings, f)
-            with open("gui_windows/history.txt", "w", encoding="utf-8") as f:
+            with open(self.config_path, "w") as f: json.dump(self.settings, f)
+            with open(self.history_path, "w", encoding="utf-8") as f:
                 for h in self.history: f.write(f"[{h['timestamp']}] {h['entry']}\n")
-        except: pass
+            print(f"Saved history to {self.history_path}")
+        except Exception as e: print(f"Save error: {e}")
 
     def setup_ui(self):
         # Pantalla
@@ -96,20 +107,32 @@ class CalcTimeWin:
         # Unidades
         units = ft.Row([self.make_unit_btn(u) for u in ["Y", "M", "D", "H", "Min"]], alignment=MainAxisAlignment.CENTER)
 
-        # Drawer de Historial (Pre-init)
-        self.page.drawer = ft.NavigationDrawer(controls=[
-            ft.Container(content=ft.Column([
-                ft.Row([ft.Text("History", size=20, weight="bold"), ft.IconButton(Icons.CLOSE, on_click=self.close_drawer)], alignment="spaceBetween"),
+        # Capa de Historial (Manual Overlay)
+        history_panel = ft.Container(
+            ref=self.history_overlay,
+            visible=False,
+            expand=True,
+            bgcolor=Colors.with_opacity(0.95, Colors.BLACK if self.settings.get("darkMode", True) else Colors.WHITE),
+            content=ft.Column([
+                ft.Row([
+                    ft.Text("History Log", size=20, weight="bold"),
+                    ft.IconButton(Icons.CLOSE, on_click=self.close_drawer)
+                ], alignment="spaceBetween"),
                 ft.Divider(),
-                ft.ListView(ref=self.history_list_ref, expand=True, height=500),
-                ft.Button("Clear All", on_click=self.clear_history)
-            ]), padding=15)
-        ])
+                self.history_list,
+                ft.Button("Clear All", icon=Icons.DELETE_OUTLINE, on_click=self.clear_history, expand=True)
+            ], spacing=10),
+            padding=20,
+            border_radius=12
+        )
 
-        self.page.add(ft.Column([top_bar, display, keypad, ft.Divider(height=10, color=Colors.TRANSPARENT), units], expand=True))
-        
-        # Sincronizar overlay para refs
-        self.page.overlay.append(self.page.drawer)
+        # Main Stack
+        self.page.add(
+            ft.Stack([
+                ft.Column([top_bar, display, keypad, ft.Divider(height=10, color=Colors.TRANSPARENT), units], expand=True),
+                history_panel
+            ], expand=True)
+        )
         self.page.update()
 
     def make_unit_btn(self, label):
@@ -194,31 +217,54 @@ class CalcTimeWin:
         elif key.upper() == "I": self.handle_input("unit", "Min")
 
     def show_history(self, e):
-        print(f"Opening History... Items: {len(self.history)}")
-        if self.history_list_ref.current:
-            self.history_list_ref.current.controls.clear()
-            for h in self.history:
-                self.history_list_ref.current.controls.append(ft.Container(
-                    content=ft.Column([ft.Text(h["timestamp"], size=10), ft.Text(h["entry"], size=12)]),
-                    padding=10, bgcolor=Colors.with_opacity(0.05, Colors.WHITE), border_radius=10
-                ))
-            if not self.history:
-                self.history_list_ref.current.controls.append(ft.Text("Empty history", italic=True))
-        
-        self.page.drawer.open = True
+        print(f"Opening History Stack... Items: {len(self.history)}")
+        self.history_list.controls.clear()
+        if not self.history:
+            self.history_list.controls.append(ft.Text("No history yet.", italic=True, opacity=0.5))
+        for item in self.history:
+            self.history_list.controls.append(ft.Container(
+                content=ft.Column([ft.Text(item["timestamp"], size=10, color=Colors.BLUE_200), ft.Text(item["entry"], size=12)]),
+                padding=10, bgcolor=Colors.with_opacity(0.1, Colors.WHITE), border_radius=10
+            ))
+        self.history_overlay.current.visible = True
         self.page.update()
+    def close_drawer(self, e=None):
+        if self.history_overlay.current:
+            self.history_overlay.current.visible = False
+            self.page.update()
 
-    def close_drawer(self, e): self.page.drawer.open = False; self.page.update()
     def clear_history(self, e): self.history = []; self.save_data(); self.close_drawer(e)
     def copy_result(self, e):
-        # Usar set_clipboard() como método, ya que .clipboard no tiene setter
-        res = self.result_ref.current.value
+        res = str(self.result_ref.current.value)
+        success = False
         try:
-            self.page.set_clipboard(res)
-        except:
-            # Fallback a propiedad si el método falla en alguna versión
-            try: self.page.clipboard = res
-            except: pass
+            # Estrategia 1: Pyperclip (Si está disponible)
+            if pyperclip:
+                pyperclip.copy(res)
+                print(f"Copied via Pyperclip: {res}")
+                success = True
+            
+            # Estrategia 2: PowerShell Nativo (Windows)
+            if not success:
+                import subprocess
+                subprocess.run(['powershell', '-Command', f'Set-Clipboard -Value "{res}"'], check=True)
+                print(f"Copied via PowerShell: {res}")
+                success = True
+        except Exception as e:
+            print(f"Primary clipboard methods failed: {e}")
+
+        # Estrategia 3: Flet Native (Fallback desesperado)
+        if not success:
+            try:
+                if hasattr(self.page, "set_clipboard"): self.page.set_clipboard(res)
+                else: self.page.clipboard = res
+                success = True
+            except Exception as ex: print(f"Flet clipboard also failed: {ex}")
+
+        if success:
+            snack = ft.SnackBar(ft.Text(f"Copied: {res}"), duration=2000)
+            self.page.overlay.append(snack)
+            snack.open = True
         self.page.update()
 
     def show_settings(self, e):
@@ -229,5 +275,11 @@ class CalcTimeWin:
         dlg.open = True
         self.page.update()
 
-def main(page: ft.Page): CalcTimeWin(page)
+def main(page: ft.Page): 
+    try:
+        CalcTimeWin(page)
+    except Exception as e:
+        print(f"CRITICAL ERROR in CalcTimeWin: {e}")
+        import traceback
+        traceback.print_exc()
 if __name__ == "__main__": ft.run(main)

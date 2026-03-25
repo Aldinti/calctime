@@ -17,11 +17,10 @@ Se optimizó la presentación en consola:
 - **Visualización Acumulada**: En el modo recursivo, se mantiene el resultado anterior visible mientras se solicitan los nuevos datos.
 - **Emojis e Indicadores**: Uso de iconos visuales para mejorar la legibilidad de las operaciones.
 
-### Walkthrough: CalcTime v3.0.9 - El Sistema Multi-Interfaz Definitivo
-(Web & Desktop)
+### Fase 4: Ecosistema Multi-Interfaz (Web & Desktop)
 Se expandió CalcTime para ser accesible desde cualquier entorno:
 - **GUI Web Premium**: Interfaz HTML/JS con diseño *Glassmorphism*.
-- **GUI Desktop Nativa (v3.0.9)**: Aplicación construida con **Flet**, con arquitectura reactiva (`ft.Ref`), soporte completo para teclado (Numpad) y localización internacional de resultados.
+- **GUI Desktop Nativa (v3.3.2)**: Aplicación construida con **Flet**, con arquitectura de capas (Stack UI) para estabilidad total, soporte universal de portapapeles (PowerShell) y localización internacional.
 - **Lógica Unificada**: Reutilización de la clase `Tiempo` en Python para todas las versiones.
 
 ---
@@ -65,11 +64,10 @@ Para ejecutar el programa directamente desde la terminal, siga estos pasos:
     ```bash
     python gui_windows/main_win.py
     ```
-#### Novedades v3.0.9 (Desktop):
--4.  **Soporte de Teclado (v3.0.9)**: Control nativo mediante NumPad, Enter y teclas de unidad.
-5.  **Internacionalización (v3.0.9)**: Resultados en formato internacional (Y, M, D, H).
-6.  **Arquitectura Reactiva**: Implementación con `ft.Ref` para una respuesta instantánea.
-7.  **Lógica Compartida**: Código core unificado en Python para CLI, Web y Desktop.
+#### Novedades v3.3.2 (Desktop):
+- **Stack UI Overlays**: Capas de interfaz manuales (no dependientes de Drawers) para transparencia y control total.
+- **PowerShell Clipboard**: Copiado garantizado mediante comandos nativos de Windows.
+- **Script-Relative Paths**: Datos persistentes vinculados localmente a la ubicación del ejecutable.
 1.  Navegue a la carpeta `gui/`.
 2.  Abra el archivo `index.html` en su navegador preferido (Chrome, Edge).
 

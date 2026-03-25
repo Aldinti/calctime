@@ -1,13 +1,12 @@
-# Walkthrough: CalcTime v3.0.9 - El Sistema Multi-Interfaz Definitivo
+# ⏰ CalcTime v3.3.2 - El Ecosistema de Cálculo de Tiempo
 ---
-*CalcTime v3.0.9 - "Reactive Perfection" (2026)*
-de Cálculo de Tiempo
+*CalcTime v3.3.2 - "Total Stability" (2026)*
 
 Una solución completa y multi-interfaz para el manejo de unidades de tiempo. Incluye lógica robusta en Python con tres formas de interacción independientes.
 
 [![Python](https://img.shields.io/badge/Python-3.7+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/Version-3.0.0-purple.svg)](https://img.shields.io/badge/Version-3.0.0-purple.svg)
+[![Version](https://img.shields.io/badge/Version-3.3.2-purple.svg)](https://img.shields.io/badge/Version-3.3.2-purple.svg)
 
 ## 🌟 3 Interfaces Independientes
 
@@ -15,16 +14,16 @@ Una solución completa y multi-interfaz para el manejo de unidades de tiempo. In
 2.  **🌐 Web Premium (HTML/JS)**: Interfaz responsiva con diseño *Glassmorphism*.
 3.  **🐚 Terminal (CLI)**: Versión clásica de consola para operaciones rápidas.
 
-## ✨ Características Principales v3.0
+## ✨ Características Principales v3.3
 
 - ✅ **Persistencia Multi-Capa**: LocalStorage para web y archivos JSON/TXT para desktop.
 -   **Multi-Interfaz**: Incluye una versión Web moderna y una aplicación de escritorio nativa para Windows.
 
-#### Novedades v3.0.9 (Desktop):
-- **Arquitectura Reactiva**: Uso de `ft.Ref` para una sincronización instantánea entre lógica y UI.
-- **Soporte de Teclado**: Control completo mediante el bloque numérico (Numpad) y atajos de unidad.
+#### Novedades v3.3.2 (Desktop):
+- **Arquitectura de Capas (Stack UI)**: Interfaz redundante mediante capas manuales para garantizar que el historial sea siempre visible y estable en cualquier versión de Flet.
+- **Portapapeles Universal**: Implementación de triple capa (Pyperclip -> PowerShell -> Flet API) para asegurar que el copiado de resultados funcione en todos los entornos de Windows.
 - **Internacionalización**: Resultados con iniciales en inglés (Y, M, D, H) para compatibilidad universal.
-- **Estabilidad de Paneles**: Gestión robusta de Historial y Ajustes mediante el sistema de superposiciones de Flet.
+- **Persistencia Script-Local**: Archivos de configuración y datos guardados siempre en la misma carpeta que el programa.
 
 - ✅ **Personalización Avanzada**: Temas Oscuro/Claro y selección de fuentes en ambas GUIs.
 - ✅ **Exportación de Historial**: Generación de reportes en `.txt` de tus cálculos.

@@ -1,4 +1,1 @@
-[23:41] 7 años, 4 meses, 5 días + 1 año, 9 meses, 12.58 horas = 9 años, 1 mes, 5 días, 12.58 horas
-[23:38] 7 años, 3 meses + 1 año, 9 meses = 9 años
-[23:34] 8 años + 11 meses = 8 años, 11 meses
-[23:24] 3 años, 2 meses, 5 días + 10 meses = 4 años, 5 días
+[00:19] 5 años + 3 años = 8 años
