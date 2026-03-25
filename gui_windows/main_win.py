@@ -1,4 +1,5 @@
 import flet as ft
+from flet import Colors, Icons, Alignment, FontWeight, MainAxisAlignment, CrossAxisAlignment, ThemeMode, TextAlign, Margin
 import json
 import os
 from datetime import datetime
@@ -60,40 +61,40 @@ class CalcTimeWin:
 
     def setup_ui(self):
         # Pantalla
-        self.expr_text = ft.Text(value="", size=14, color=ft.colors.BLUE_200, italic=True)
-        self.result_text = ft.Text(value="0", size=48, weight=ft.FontWeight.BOLD)
+        self.expr_text = ft.Text(value="", size=16, color=Colors.BLUE_200, italic=True)
+        self.result_text = ft.Text(value="0", size=32, weight=FontWeight.BOLD)
         
         display_container = ft.Container(
             content=ft.Column(
                 [self.expr_text, self.result_text],
-                horizontal_alignment=ft.CrossAxisAlignment.END,
+                horizontal_alignment=CrossAxisAlignment.END,
                 spacing=0
             ),
             padding=20,
-            bgcolor=ft.colors.with_opacity(0.1, ft.colors.BLUE_GREY_900),
+            bgcolor=Colors.with_opacity(0.1, Colors.BLUE_GREY_900),
             border_radius=15,
-            margin=ft.margin.only(bottom=20)
+            margin=Margin.only(bottom=20)
         )
 
         # Botones Superiores (H, S, Copiar)
         top_actions = ft.Row(
             [
-                ft.IconButton(ft.icons.HISTORY_ROUNDED, on_click=self.show_history, tooltip="Historial"),
-                ft.IconButton(ft.icons.SETTINGS_ROUNDED, on_click=self.show_settings, tooltip="Ajustes"),
-                ft.VerticalDivider(width=10, color=ft.colors.TRANSPARENT),
-                ft.ElevatedButton("Copiar", icon=ft.icons.COPY_ALL, on_click=self.copy_result, 
+                ft.IconButton(Icons.HISTORY_ROUNDED, on_click=self.show_history, tooltip="Historial"),
+                ft.IconButton(Icons.SETTINGS_ROUNDED, on_click=self.show_settings, tooltip="Ajustes"),
+                ft.VerticalDivider(width=10, color=Colors.TRANSPARENT),
+                ft.Button("Copiar", icon=Icons.COPY_ALL, on_click=self.copy_result, 
                                  style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=10)))
             ],
-            alignment=ft.MainAxisAlignment.START
+            alignment=MainAxisAlignment.START
         )
 
         # Teclado (Flet GridView para los botones)
         buttons = [
-            ("AC", "clear", ft.colors.PINK_300), ("DEL", "delete", ft.colors.PINK_300), ("%", "op", ft.colors.ORANGE_300), ("÷", "op", ft.colors.ORANGE_300),
-            ("7", "digit", None), ("8", "digit", None), ("9", "digit", None), ("×", "op", ft.colors.ORANGE_300),
-            ("4", "digit", None), ("5", "digit", None), ("6", "digit", None), ("-", "op", ft.colors.ORANGE_300),
-            ("1", "digit", None), ("2", "digit", None), ("3", "digit", None), ("+", "op", ft.colors.ORANGE_300),
-            ("0", "digit", None), (".", "digit", None), ("=", "calc", ft.colors.CYAN_400),
+            ("AC", "clear", Colors.PINK_300), ("DEL", "delete", Colors.PINK_300), ("%", "op", Colors.ORANGE_300), ("÷", "op", Colors.ORANGE_300),
+            ("7", "digit", None), ("8", "digit", None), ("9", "digit", None), ("×", "op", Colors.ORANGE_300),
+            ("4", "digit", None), ("5", "digit", None), ("6", "digit", None), ("-", "op", Colors.ORANGE_300),
+            ("1", "digit", None), ("2", "digit", None), ("3", "digit", None), ("+", "op", Colors.ORANGE_300),
+            ("0", "digit", None), (".", "digit", None), ("=", "calc", Colors.CYAN_400),
         ]
 
         keypad = ft.GridView(
@@ -107,10 +108,10 @@ class CalcTimeWin:
 
         for text, type, color in buttons:
             btn = ft.Container(
-                content=ft.Text(text, size=20, weight=ft.FontWeight.W_500),
-                alignment=ft.alignment.center,
+                content=ft.Text(text, size=20, weight=FontWeight.W_500),
+                alignment=Alignment.CENTER,
                 on_click=lambda e, t=text, tp=type: self.handle_input(tp, t),
-                bgcolor=color if color else ft.colors.with_opacity(0.05, ft.colors.WHITE),
+                bgcolor=color if color else Colors.with_opacity(0.05, Colors.WHITE),
                 border_radius=12,
                 ink=True
             )
@@ -124,7 +125,7 @@ class CalcTimeWin:
                 self.make_unit_btn("Minutos")
             ],
             wrap=True,
-            alignment=ft.MainAxisAlignment.CENTER,
+            alignment=MainAxisAlignment.CENTER,
             spacing=5
         )
 
@@ -135,7 +136,7 @@ class CalcTimeWin:
                     top_actions,
                     display_container,
                     keypad,
-                    ft.Divider(height=20, color=ft.colors.TRANSPARENT),
+                    ft.Divider(height=20, color=Colors.TRANSPARENT),
                     unit_buttons
                 ],
                 expand=True
@@ -146,13 +147,13 @@ class CalcTimeWin:
         return ft.Container(
             content=ft.Text(label, size=12),
             padding=10,
-            bgcolor=ft.colors.with_opacity(0.1, ft.colors.BLUE_400),
+            bgcolor=Colors.with_opacity(0.1, Colors.BLUE_400),
             border_radius=8,
             on_click=lambda e: self.handle_input("unit", label)
         )
 
     def apply_settings(self):
-        self.page.theme_mode = ft.ThemeMode.DARK if self.settings["darkMode"] else ft.ThemeMode.LIGHT
+        self.page.theme_mode = ThemeMode.DARK if self.settings["darkMode"] else ThemeMode.LIGHT
         # Fuentes se aplican vía style properties si se cargan fuentes personalizadas
         self.page.update()
 
@@ -239,8 +240,11 @@ class CalcTimeWin:
 
     def copy_result(self, e):
         text = str(self.last_result) if self.last_result else self.current_value
-        self.page.set_clipboard(text)
-        self.page.show_snack_bar(ft.SnackBar(ft.Text("¡Copiado al portapapeles!")))
+        self.page.clipboard = text
+        snack = ft.SnackBar(ft.Text("¡Copiado al portapapeles!"))
+        self.page.overlay.append(snack)
+        snack.open = True
+        self.page.update()
 
     def add_to_history(self, entry):
         ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -256,10 +260,10 @@ class CalcTimeWin:
             lv.controls.append(
                 ft.Container(
                     content=ft.Column([
-                        ft.Text(item["timestamp"], size=10, color=ft.colors.BLUE_200),
+                        ft.Text(item["timestamp"], size=10, color=Colors.BLUE_200),
                         ft.Text(item["entry"], size=14)
                     ]),
-                    padding=10, bgcolor=ft.colors.with_opacity(0.05, ft.colors.WHITE), border_radius=10
+                    padding=10, bgcolor=Colors.with_opacity(0.05, Colors.WHITE), border_radius=10
                 )
             )
         
@@ -267,15 +271,16 @@ class CalcTimeWin:
             controls=[
                 ft.Container(
                     content=ft.Column([
-                        ft.Row([ft.Text("Historial", size=24, weight="bold"), ft.IconButton(ft.icons.CLOSE, on_click=lambda _: self.page.drawer.open_close())], alignment="spaceBetween"),
+                        ft.Row([ft.Text("Historial", size=24, weight="bold"), ft.IconButton(Icons.CLOSE, on_click=lambda _: self.page.drawer.open_close())], alignment="spaceBetween"),
                         ft.Divider(),
                         lv,
-                        ft.ElevatedButton("Limpiar Todo", icon=ft.icons.DELETE_FOREVER, on_click=self.clear_history)
+                        ft.Button("Limpiar Todo", icon=Icons.DELETE_FOREVER, on_click=self.clear_history)
                     ]),
                     padding=20
                 )
             ]
         )
+        self.page.overlay.append(self.page.drawer)
         self.page.drawer.open = True
         self.page.update()
 
@@ -299,7 +304,7 @@ class CalcTimeWin:
             ], tight=True),
             actions=[ft.TextButton("Cerrar", on_click=lambda _: self.close_dlg(dlg))]
         )
-        self.page.dialog = dlg
+        self.page.overlay.append(dlg)
         dlg.open = True
         self.page.update()
 
@@ -311,4 +316,4 @@ def main(page: ft.Page):
     CalcTimeWin(page)
 
 if __name__ == "__main__":
-    ft.app(target=main)
+    ft.run(main)
