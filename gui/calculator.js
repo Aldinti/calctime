@@ -71,15 +71,46 @@ const Calculator = {
     
     // Estado interno para construir el objeto Tiempo actual
     tempValues: { años: 0, meses: 0, dias: 0, horas: 0, minutos: 0 },
-    activeUnit: null,
+    history: [],
+    settings: {
+        darkMode: true,
+        font: "'Inter', sans-serif"
+    },
 
     init() {
         this.display = document.getElementById('result');
         this.exprView = document.getElementById('expression');
+        this.historyList = document.getElementById('history-list');
+        
+        this.loadData();
+        this.applySettings();
         this.addEventListeners();
+        this.renderHistory();
+    },
+
+    loadData() {
+        const savedHistory = localStorage.getItem('calcTime_history');
+        if (savedHistory) this.history = JSON.parse(savedHistory);
+
+        const savedSettings = localStorage.getItem('calcTime_settings');
+        if (savedSettings) this.settings = JSON.parse(savedSettings);
+    },
+
+    saveData() {
+        localStorage.setItem('calcTime_history', JSON.stringify(this.history));
+        localStorage.setItem('calcTime_settings', JSON.stringify(this.settings));
+    },
+
+    applySettings() {
+        document.body.classList.toggle('light-mode', !this.settings.darkMode);
+        document.getElementById('theme-toggle').checked = this.settings.darkMode;
+        
+        document.documentElement.style.setProperty('--display-font', this.settings.font);
+        document.getElementById('font-select').value = this.settings.font;
     },
 
     addEventListeners() {
+        // Botones del teclado
         document.querySelectorAll('.btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const action = btn.dataset.action;
@@ -88,14 +119,52 @@ const Calculator = {
             });
         });
 
+        // Controles de Pantalla/Paneles
+        document.getElementById('btn-history').onclick = () => this.togglePanel('history-panel', true);
+        document.getElementById('btn-settings').onclick = () => this.togglePanel('settings-panel', true);
+        document.getElementById('close-history').onclick = () => this.togglePanel('history-panel', false);
+        document.getElementById('close-settings').onclick = () => this.togglePanel('settings-panel', false);
+
+        // Controles de Ajustes
+        document.getElementById('theme-toggle').onchange = (e) => {
+            this.settings.darkMode = e.target.checked;
+            this.applySettings();
+            this.saveData();
+        };
+
+        document.getElementById('font-select').onchange = (e) => {
+            this.settings.font = e.target.value;
+            this.applySettings();
+            this.saveData();
+        };
+
+        // Acciones de Historial
+        document.getElementById('clear-history').onclick = () => {
+            if (confirm('¿Vaciar todo el historial?')) {
+                this.history = [];
+                this.renderHistory();
+                this.saveData();
+            }
+        };
+
+        document.getElementById('export-btn').onclick = () => this.exportHistory();
+
         // Soporte de teclado básico
         document.addEventListener('keydown', (e) => {
             if (e.key >= '0' && e.key <= '9') this.handleInput('digit', e.key);
             if (e.key === '+') this.handleInput('operator', '+');
             if (e.key === '-') this.handleInput('operator', '-');
             if (e.key === 'Enter') this.handleInput('calculate');
-            if (e.key === 'Escape') this.handleInput('clear');
+            if (e.key === 'Escape') {
+                this.handleInput('clear');
+                this.togglePanel('history-panel', false);
+                this.togglePanel('settings-panel', false);
+            }
         });
+    },
+
+    togglePanel(id, show) {
+        document.getElementById(id).classList.toggle('active', show);
     },
 
     handleInput(action, value) {
@@ -121,11 +190,10 @@ const Calculator = {
                 break;
             
             case 'unit':
-                const num = parseInt(this.currentValue);
+                const num = parseFloat(this.currentValue);
                 const unitMap = { 'Años': 'años', 'Meses': 'meses', 'Días': 'dias', 'Horas': 'horas', 'Minutos': 'minutos' };
                 this.tempValues[unitMap[value]] = num;
                 
-                // Representación visual
                 const unitDisplay = { 'Años': 'a', 'Meses': 'm', 'Días': 'd', 'Horas': 'h', 'Minutos': 'min' }[value];
                 this.expression += `${num}${unitDisplay} `;
                 this.currentValue = '0';
@@ -133,7 +201,6 @@ const Calculator = {
                 break;
 
             case 'operator':
-                // Si hay valores temporales, construir un Tiempo
                 const t = new Tiempo(
                     this.tempValues.años, this.tempValues.meses, this.tempValues.dias,
                     this.tempValues.horas, this.tempValues.minutos
@@ -158,7 +225,6 @@ const Calculator = {
                     this.calculateIntermediate(finalT);
                     const resultStr = this.lastResult.toString();
                     
-                    // Agregar al historial
                     this.addToHistory(`${prevStr} ${this.operator} ${finalT.toString()} = ${resultStr}`);
                     
                     this.expression = '';
@@ -180,7 +246,10 @@ const Calculator = {
             case 'copy':
                 const textToCopy = this.lastResult ? this.lastResult.toString() : this.currentValue;
                 navigator.clipboard.writeText(textToCopy);
-                alert('¡Copiado al portapapeles!');
+                // Mini feedback (opcional, alert es intrusivo)
+                const originalText = this.display.textContent;
+                this.display.textContent = '¡Copiado!';
+                setTimeout(() => this.display.textContent = originalText, 1000);
                 break;
         }
     },
@@ -190,9 +259,14 @@ const Calculator = {
             this.lastResult.totalMinutos += t.totalMinutos;
         } else if (this.operator === '-') {
             this.lastResult.totalMinutos -= t.totalMinutos;
+        } else if (this.operator === '×') {
+            // Multiplicación por escalar
+            const escalar = parseFloat(this.currentValue) || 1;
+            this.lastResult.totalMinutos *= escalar;
+        } else if (this.operator === '÷') {
+            const escalar = parseFloat(this.currentValue) || 1;
+            if (escalar !== 0) this.lastResult.totalMinutos /= escalar;
         }
-        // Multiplicación y división funcionalmente diferentes (requieren escalar)
-        // Se implementarán en la siguiente fase
     },
 
     resetTempValues() {
@@ -201,8 +275,37 @@ const Calculator = {
     },
 
     addToHistory(entry) {
-        console.log("Historial:", entry);
-        // Podríamos renderizar esto en un panel lateral
+        const timestamp = new Date().toLocaleString();
+        this.history.unshift({ entry, timestamp });
+        if (this.history.length > 50) this.history.pop();
+        this.renderHistory();
+        this.saveData();
+    },
+
+    renderHistory() {
+        this.historyList.innerHTML = this.history.length === 0 
+            ? '<p style="text-align:center; opacity:0.5; margin-top:20px;">No hay historial</p>'
+            : this.history.map(item => `
+                <div class="history-item">
+                    <div style="font-size:0.7rem; color:var(--text-secondary); margin-bottom:5px;">${item.timestamp}</div>
+                    <div>${item.entry}</div>
+                </div>
+            `).join('');
+    },
+
+    exportHistory() {
+        if (this.history.length === 0) return alert('No hay historial para exportar');
+        
+        const content = this.history.map(h => `[${h.timestamp}] ${h.entry}`).join('\n');
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'historial_calctime.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
     },
 
     updateDisplay(showResult = false) {

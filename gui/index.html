@@ -10,17 +10,21 @@
 <body>
     <div class="calculator-wrapper">
         <div class="display">
+            <div class="display-controls">
+                <button class="icon-btn" id="btn-history" title="Historial">📜</button>
+                <button class="icon-btn" id="btn-settings" title="Ajustes">⚙️</button>
+            </div>
             <div id="expression" class="expression"></div>
             <div id="result" class="result">0</div>
         </div>
         
         <div class="keypad">
-            <!-- Funciones de Control -->
+            <!-- Funciones de Control Superior -->
             <button class="btn btn-operator" data-action="clear">AC</button>
             <button class="btn btn-operator" data-action="delete">DEL</button>
             <button class="btn copy-btn btn-action" data-action="copy">Copiar</button>
             
-            <!-- Dígitos y Operadores Básicos -->
+            <!-- Dígitos y Operadores -->
             <button class="btn" data-action="digit">7</button>
             <button class="btn" data-action="digit">8</button>
             <button class="btn" data-action="digit">9</button>
@@ -49,6 +53,46 @@
             
             <!-- Acción Final -->
             <button class="btn btn-action" style="grid-column: span 2;" data-action="calculate">=</button>
+        </div>
+    </div>
+
+    <!-- Panel de Historial -->
+    <div id="history-panel" class="side-panel">
+        <div class="panel-header">
+            <h3>Historial</h3>
+            <button id="close-history" class="close-btn">&times;</button>
+        </div>
+        <div id="history-list" class="panel-content">
+            <!-- Las entradas del historial se cargarán aquí -->
+        </div>
+        <div class="panel-actions">
+            <button id="export-btn" class="btn btn-action">Exportar .txt</button>
+            <button id="clear-history" class="btn btn-operator">Limpiar</button>
+        </div>
+    </div>
+
+    <!-- Panel de Ajustes -->
+    <div id="settings-panel" class="side-panel">
+        <div class="panel-header">
+            <h3>Ajustes</h3>
+            <button id="close-settings" class="close-btn">&times;</button>
+        </div>
+        <div class="panel-content">
+            <div class="setting-item">
+                <span>Modo Oscuro</span>
+                <label class="switch">
+                    <input type="checkbox" id="theme-toggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="setting-item">
+                <span>Fuente</span>
+                <select id="font-select">
+                    <option value="'Inter', sans-serif">Inter (Moderno)</option>
+                    <option value="'Roboto', sans-serif">Roboto (Sleek)</option>
+                    <option value="'Courier New', monospace">Courier (Retro)</option>
+                </select>
+            </div>
         </div>
     </div>
 
